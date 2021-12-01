@@ -2,6 +2,8 @@ package cz.muni.fi.pv217;
 
 import cz.muni.fi.pv217.entity.Customer;
 import cz.muni.fi.pv217.service.CustomerService;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,12 +23,16 @@ public class CustomerResource {
     CustomerService customerService;
 
     @GET
+    @Counted(name = "customer.getAll.counter")
+    @Timed(name = "customer.getAll.timer")
     public List<Customer> getCustomers() {
         return Customer.listAll();
     }
 
     @GET
     @Path("/{id}")
+    @Counted(name = "customer.getOne.counter")
+    @Timed(name = "customer.getOne.timer")
     public Response getCustomer(@PathParam long id) {
         Customer customer = Customer.findById(id);
         if (customer == null) {
@@ -40,6 +46,8 @@ public class CustomerResource {
 
     @POST
     @Path("/create")
+    @Counted(name = "customer.create.counter")
+    @Timed(name = "customer.create.timer")
     public Response createCustomer(Customer customer) {
         Customer created = customerService.createCustomer(customer);
         return Response.status(Response.Status.CREATED).entity(created).build();
@@ -47,12 +55,16 @@ public class CustomerResource {
 
     @PUT
     @Path("/{id}/update")
+    @Counted(name = "customer.update.counter")
+    @Timed(name = "customer.update.timer")
     public Customer updateCustomer(@PathParam long id, Customer update) {
         return customerService.updateCustomer(id, update);
     }
 
     @DELETE
     @Path("/{id}/delete")
+    @Counted(name = "customer.delete.counter")
+    @Timed(name = "customer.delete.timer")
     public Response deleteAvenger(@PathParam long id) {
         Customer deleted = customerService.deleteCustomer(id);
         return Response.ok(deleted).build();
