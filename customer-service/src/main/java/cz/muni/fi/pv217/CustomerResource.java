@@ -1,16 +1,60 @@
 package cz.muni.fi.pv217;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import cz.muni.fi.pv217.entity.Customer;
+import cz.muni.fi.pv217.service.CustomerService;
+import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
-@Path("/hello")
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.List;
+
+@Path("/customer")
+@ApplicationScoped
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class CustomerResource {
 
+    @Inject
+    CustomerService customerService;
+
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello() {
-        return "Hello RESTEasy";
+    public List<Customer> getCustomers() {
+        return Customer.listAll();
+    }
+
+    @GET
+    @Path("/{id}")
+    public Response getCustomer(@PathParam long id) {
+        Customer customer = Customer.findById(id);
+        if (customer == null) {
+            return Response
+                    .status(Response.Status.NOT_FOUND)
+                    .entity(String.format("Customer for id %d not found.", id))
+                    .build();
+        }
+        return Response.ok(customer).build();
+    }
+
+    @POST
+    @Path("/create")
+    public Response createCustomer(Customer customer) {
+        Customer created = customerService.createCustomer(customer);
+        return Response.status(Response.Status.CREATED).entity(created).build();
+    }
+
+    @PUT
+    @Path("/{id}/update")
+    public Customer updateCustomer(@PathParam long id, Customer update) {
+        return customerService.updateCustomer(id, update);
+    }
+
+    @DELETE
+    @Path("/{id}/delete")
+    public Response deleteAvenger(@PathParam long id) {
+        Customer deleted = customerService.deleteCustomer(id);
+        return Response.ok(deleted).build();
     }
 }
