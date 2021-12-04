@@ -57,7 +57,7 @@ public class BasketService {
 
         BasketItem item = BasketItem.findById(itemId);
         if (item == null) {
-            throw new NotFoundException("Item with id %d does not exist");
+            throw new NotFoundException("Basket item with id %d does not exist");
         }
 
         BasketItem.deleteById(itemId);

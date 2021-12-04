@@ -22,32 +22,38 @@ public class BasketResource {
     @GET
     @Path("/{customerId}/basket")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getCustomerBasket(@PathParam long customerId) {
-        Basket basket = basketService.getCustomerBasket(customerId);
-        return Response.ok(basket).build();
+    public Basket getCustomerBasket(@PathParam long customerId) {
+        return basketService.getCustomerBasket(customerId);
     }
 
     @PUT
     @Path("/{customerId}/basket/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Basket addItem(@PathParam long customerId, BasketItemAddDTO itemAddDTO) {
-        return basketService.addItem(customerId, itemAddDTO);
+    public Response addItem(@PathParam long customerId, BasketItemAddDTO itemAddDTO) {
+
+        // Add check for presence of customer with customerId
+        Basket basket = basketService.addItem(customerId, itemAddDTO);
+        return Response.ok(basket).build();
     }
 
     @PUT
-    @Path("/{customerId}/basket/remove")
-    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{customerId}/basket/remove/{itemId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Basket removeItem(@PathParam long customerId, long itemId) {
-        return basketService.removeItem(customerId, itemId);
+    public Response removeItem(@PathParam long customerId, @PathParam long itemId) {
+
+        // Add check for presence of customer with customerId
+        Basket basket = basketService.removeItem(customerId, itemId);
+        return Response.ok(basket).build();
     }
 
     @PUT
     @Path("/{customerId}/basket/clear")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Basket clear(@PathParam long customerId) {
-        return basketService.clear(customerId);
+    public Response clear(@PathParam long customerId) {
+
+        // Add check for presence of customer with customerId
+        Basket basket = basketService.clear(customerId);
+        return Response.ok(basket).build();
     }
 }
