@@ -48,7 +48,7 @@ public class OrderResource {
     @Path("/create")
     @Counted(name = "order.create.counter")
     @Timed(name = "order.create.timer")
-    public Response createCustomer(Order order) {
+    public Response createOrder(Order order) {
         Order created = orderService.createOrder(order);
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
@@ -57,7 +57,7 @@ public class OrderResource {
     @Path("/{id}/update")
     @Counted(name = "order.update.counter")
     @Timed(name = "order.update.timer")
-    public Order updateCustomer(@PathParam long id, Order update) {
+    public Order updateOrder(@PathParam long id, Order update) {
         return orderService.updateOrder(id, update);
     }
 
@@ -65,7 +65,7 @@ public class OrderResource {
     @Path("/{id}/delete")
     @Counted(name = "order.delete.counter")
     @Timed(name = "order.delete.timer")
-    public Response deleteAvenger(@PathParam long id) {
+    public Response deleteOrder(@PathParam long id) {
         Order deleted = orderService.deleteOrder(id);
         return Response.ok(deleted).build();
     }

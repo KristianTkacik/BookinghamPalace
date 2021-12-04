@@ -7,11 +7,13 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/book")
 @ApplicationScoped
+@Produces(MediaType.APPLICATION_JSON)
 public class BookResource {
 
     @Inject
@@ -19,6 +21,7 @@ public class BookResource {
 
     @POST
     @Path("/create")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response createBook(Book book) {
         Book created = bookService.createBook(book);
         return Response.status(Response.Status.CREATED).entity(created).build();
@@ -26,6 +29,7 @@ public class BookResource {
 
     @PUT
     @Path("/{id}/update")
+    @Consumes(MediaType.APPLICATION_JSON)
     public Book updateBook(@PathParam long id, Book update) {
         return bookService.updateBook(id, update);
     }

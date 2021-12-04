@@ -1,6 +1,7 @@
 package cz.muni.fi.pv217.service;
 
 import cz.muni.fi.pv217.entity.Order;
+import cz.muni.fi.pv217.entity.OrderItem;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
@@ -13,6 +14,10 @@ public class OrderService {
     @Transactional
     public Order createOrder(Order order) {
         order.persist();
+        for (OrderItem orderItem : order.items) {
+            orderItem.orderId = order.id;
+            orderItem.persist();
+        }
         return order;
     }
 
