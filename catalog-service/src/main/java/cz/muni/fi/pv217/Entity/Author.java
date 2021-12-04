@@ -1,6 +1,7 @@
 package cz.muni.fi.pv217.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import cz.muni.fi.pv217.DTO.AuthorDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Entity;
@@ -37,19 +38,12 @@ public class Author extends PanacheEntity {
                 '}';
     }
 
-    public void merge(Author update) {
+    public void merge(AuthorDTO update) {
         if (update.name != null) {
             this.name = update.name;
         }
         if (update.dateOfBirth != null) {
             this.dateOfBirth = update.dateOfBirth;
         }
-        if (update.books != null) {
-            this.books = update.books;
-        }
-    }
-
-    public void addBook(Book book) {
-        this.books.add(book);
     }
 }
