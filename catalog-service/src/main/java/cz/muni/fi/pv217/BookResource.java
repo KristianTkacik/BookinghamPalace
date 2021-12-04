@@ -1,19 +1,13 @@
 package cz.muni.fi.pv217;
 
-import cz.muni.fi.pv217.Entity.Author;
 import cz.muni.fi.pv217.Entity.Book;
-import cz.muni.fi.pv217.Entity.Genre;
-import cz.muni.fi.pv217.service.BookService;
+import cz.muni.fi.pv217.Service.BookService;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 
 @Path("/book")

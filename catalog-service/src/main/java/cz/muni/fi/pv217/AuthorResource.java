@@ -1,7 +1,7 @@
 package cz.muni.fi.pv217;
 
 import cz.muni.fi.pv217.Entity.Author;
-import cz.muni.fi.pv217.service.AuthorService;
+import cz.muni.fi.pv217.Service.AuthorService;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.enterprise.context.ApplicationScoped;

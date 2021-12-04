@@ -1,4 +1,4 @@
-package cz.muni.fi.pv217.service;
+package cz.muni.fi.pv217.Service;
 
 import cz.muni.fi.pv217.Entity.Book;
 
