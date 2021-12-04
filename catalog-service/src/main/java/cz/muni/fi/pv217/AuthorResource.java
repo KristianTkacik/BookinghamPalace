@@ -4,6 +4,8 @@ import cz.muni.fi.pv217.DTO.AuthorDTO;
 import cz.muni.fi.pv217.Entity.Author;
 import cz.muni.fi.pv217.Entity.Book;
 import cz.muni.fi.pv217.Service.AuthorService;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,6 +23,8 @@ public class AuthorResource {
 
     @POST
     @Path("/create")
+    @Counted(name = "author.create.counter")
+    @Timed(name = "author.create.timer")
     public Response createAuthor(AuthorDTO author) {
         Author created = authorService.createAuthor(author);
         return Response.status(Response.Status.CREATED).entity(created).build();
@@ -28,12 +32,16 @@ public class AuthorResource {
 
     @PUT
     @Path("/{id}/update")
+    @Counted(name = "author.update.counter")
+    @Timed(name = "author.update.timer")
     public Author updateAuthor(@PathParam long id, AuthorDTO update) {
         return authorService.updateAuthor(id, update);
     }
 
     @PUT
     @Path("/{id}/add-book")
+    @Counted(name = "author.add-book.counter")
+    @Timed(name = "author.add-book.timer")
     public Response addBook(@PathParam long id, Book book) {
         try {
             Author author = authorService.addBook(id, book);
@@ -48,6 +56,8 @@ public class AuthorResource {
 
     @PUT
     @Path("/{id}/remove-book")
+    @Counted(name = "author.remove-book.counter")
+    @Timed(name = "author.remove-book.timer")
     public Response removeBook(@PathParam long id, Book book) {
         try {
             Author author = authorService.removeBook(id, book);
@@ -62,6 +72,8 @@ public class AuthorResource {
 
     @DELETE
     @Path("/{id}/delete")
+    @Counted(name = "author.delete-book.counter")
+    @Timed(name = "author.delete-book.timer")
     public Response deleteAuthor(@PathParam long id) {
         Author author = Author.findById(id);
 
@@ -76,13 +88,16 @@ public class AuthorResource {
     }
 
     @GET
-    @Path("/all")
+    @Counted(name = "author.getAll.counter")
+    @Timed(name = "author.getAll.timer")
     public List<Author> getAuthors() {
         return Author.listAll();
     }
 
     @GET
     @Path("/{id}")
+    @Counted(name = "author.getOne.counter")
+    @Timed(name = "author.getOne.timer")
     public Response getAuthor(@PathParam long id) {
         Author author = Author.findById(id);
 
