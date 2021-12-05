@@ -49,7 +49,12 @@ public class OrderResource {
     @Counted(name = "order.create.counter")
     @Timed(name = "order.create.timer")
     public Response createOrder(Order order) {
-        Order created = orderService.createOrder(order);
+        Order created;
+        try {
+            created = orderService.createOrder(order);
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
 

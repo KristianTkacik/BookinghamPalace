@@ -19,7 +19,7 @@ public class Order extends PanacheEntity {
     public String street;
     public String city;
     public String country;
-    public LocalDate date;
+    public LocalDate date = LocalDate.now();
     @OneToMany(mappedBy = "orderId", fetch = FetchType.EAGER)
     public List<OrderItem> items = new ArrayList<>();
 

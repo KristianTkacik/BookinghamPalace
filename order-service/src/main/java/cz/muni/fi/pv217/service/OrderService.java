@@ -42,6 +42,7 @@ public class OrderService {
             throw new NotFoundException(String.format("Order with id: %d not found", id));
         }
 
+        OrderItem.delete("orderId", id);
         boolean deleted = Order.deleteById(id);
         return deleted ? order : null;
     }
