@@ -7,14 +7,11 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.filter.log.LogDetail;
 import org.junit.jupiter.api.Test;
 
-import javax.transaction.Transactional;
-import java.time.LocalDate;
-import java.util.ArrayList;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource.class)
@@ -28,7 +25,7 @@ public class OrderResourceTest {
                 .log()
                 .ifValidationFails(LogDetail.BODY)
                 .statusCode(200)
-                .body("customerName", containsInAnyOrder("Anna", "Jozka"));
+                .body("customerName", containsInAnyOrder("Anna", "Roger", "Roger"));
     }
 
     @Test
@@ -48,8 +45,6 @@ public class OrderResourceTest {
         order.street = "Vesela 5";
         order.city = "Brno";
         order.country = "Cesko";
-        order.date = LocalDate.of(200,1, 23);
-        order.items = new ArrayList<>();
 
         given()
                 .body(order)
@@ -57,9 +52,8 @@ public class OrderResourceTest {
                 .when().post("/order/create")
                 .then()
                 .statusCode(201)
-                .body("name", equalTo("Roger"))
-                .body("items", equalTo("[]"));
-
+                .body("customerName", equalTo("Roger"))
+                .body("items", empty());
     }
 
     @Test
@@ -70,8 +64,6 @@ public class OrderResourceTest {
         order.street = "Vesela 5";
         order.city = "Brno";
         order.country = "Cesko";
-        order.date = LocalDate.now();
-        order.items = new ArrayList<>();
 
         given()
                 .body(order)
@@ -80,14 +72,13 @@ public class OrderResourceTest {
                 .then()
                 .log()
                 .ifValidationFails(LogDetail.BODY)
-                .statusCode(201)
-                .body("name", equalTo("Roger"))
-                .body("items", equalTo("[]"));
+                .statusCode(200)
+                .body("customerName", equalTo("Roger"))
+                .body("items", empty());
     }
 
     @Test
     void deleteOrder() {
-
         given()
                 .when().delete("/order/1/delete")
                 .then()

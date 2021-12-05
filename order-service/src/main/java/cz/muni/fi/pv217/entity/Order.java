@@ -2,7 +2,10 @@ package cz.muni.fi.pv217.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +19,7 @@ public class Order extends PanacheEntity {
     public String street;
     public String city;
     public String country;
-    public LocalDate date;
+    public LocalDate date = LocalDate.now();
     @OneToMany(mappedBy = "orderId", fetch = FetchType.EAGER)
     public List<OrderItem> items = new ArrayList<>();
 

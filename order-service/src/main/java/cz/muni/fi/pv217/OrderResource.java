@@ -6,7 +6,6 @@ import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
-import javax.annotation.security.PermitAll;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -47,7 +46,6 @@ public class OrderResource {
 
     @POST
     @Path("/create")
-    @PermitAll
     @Counted(name = "order.create.counter")
     @Timed(name = "order.create.timer")
     public Response createOrder(Order order) {
