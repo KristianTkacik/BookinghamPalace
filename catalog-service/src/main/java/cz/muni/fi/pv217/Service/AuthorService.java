@@ -1,6 +1,8 @@
 package cz.muni.fi.pv217.Service;
 
-import cz.muni.fi.pv217.DTO.AuthorDTO;
+import cz.muni.fi.pv217.DTO.AuthorCreateDTO;
+import cz.muni.fi.pv217.DTO.AuthorUpdateDTO;
+import cz.muni.fi.pv217.DTO.BookIdDto;
 import cz.muni.fi.pv217.Entity.Author;
 import cz.muni.fi.pv217.Entity.Book;
 
@@ -14,14 +16,14 @@ import java.util.List;
 public class AuthorService {
 
     @Transactional
-    public Author createAuthor(AuthorDTO author) {
+    public Author createAuthor(AuthorCreateDTO author) {
         Author created = new Author(author.name, author.dateOfBirth, new HashSet<>());
         created.persist();
         return created;
     }
 
     @Transactional
-    public Author updateAuthor(long id, AuthorDTO update) {
+    public Author updateAuthor(long id, AuthorUpdateDTO update) {
         Author author = Author.findById(id);
 
         if (author == null) {
@@ -51,42 +53,52 @@ public class AuthorService {
     }
 
     @Transactional
-    public Author addBook(long id, Book book) {
+    public Author addBook(long id, BookIdDto book) {
         Author author = Author.findById(id);
 
         if (author == null) {
             throw new NotFoundException(String.format("Author with id %d not found", id));
         }
 
-        book = Book.findById(book.id);
+        Book found = Book.findById(book.id);
 
-        if (book == null) {
-            throw new NotFoundException(String.format("Author with id %d not found", id));
+        if (found == null) {
+            throw new NotFoundException(String.format("Book with id %d not found", book.id));
         }
 
-        author.books.add(book);
-        book.author = author;
-        book.persist();
+        if (author.books.contains(found)) {
+            throw new IllegalArgumentException(
+                    String.format("Author with id %d already has a book with id %d", id, book.id));
+        }
+
+        author.books.add(found);
+        found.author = author;
+        found.persist();
         return author;
     }
 
     @Transactional
-    public Author removeBook(long id, Book book) {
+    public Author removeBook(long id, BookIdDto book) {
         Author author = Author.findById(id);
 
         if (author == null) {
             throw new NotFoundException(String.format("Author with id %d not found", id));
         }
 
-        book = Book.findById(book.id);
+        Book found = Book.findById(book.id);
 
-        if (book == null) {
-            throw new NotFoundException(String.format("Author with id %d not found", id));
+        if (found == null) {
+            throw new NotFoundException(String.format("Book with id %d not found", book.id));
         }
 
-        author.books.remove(book);
-        book.author = null;
-        book.persist();
+        if (!author.books.contains(found)) {
+            throw new IllegalArgumentException(
+                    String.format("Author with id %d does not have a book with id %d", id, book.id));
+        }
+
+        author.books.remove(found);
+        found.author = null;
+        found.persist();
         author.persist();
         return author;
     }

@@ -1,9 +1,11 @@
 package cz.muni.fi.pv217.Entity;
 
+import cz.muni.fi.pv217.DTO.BookUpdateDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.ws.rs.NotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,7 +16,6 @@ public class Book extends PanacheEntity {
     public LocalDate releaseDate;
     public Genre genre;
     public BigDecimal price;
-
     @ManyToOne
     public Author author;
 
@@ -41,7 +42,7 @@ public class Book extends PanacheEntity {
                 '}';
     }
 
-    public void merge(Book update) {
+    public void merge(BookUpdateDTO update) {
         if (update.title != null) {
             this.title = update.title;
         }
@@ -55,7 +56,11 @@ public class Book extends PanacheEntity {
             this.price = update.price;
         }
         if (update.author != null) {
-            this.author = update.author;
+            Author author = Author.findById(update.author.id);
+            if (author == null) {
+                throw new NotFoundException(String.format("Author with id %d not found", update.author.id));
+            }
+            this.author = author;
         }
     }
 }

@@ -1,5 +1,7 @@
 package cz.muni.fi.pv217;
 
+import cz.muni.fi.pv217.DTO.BookCreateDTO;
+import cz.muni.fi.pv217.DTO.BookUpdateDTO;
 import cz.muni.fi.pv217.Entity.Author;
 import cz.muni.fi.pv217.Entity.Book;
 import cz.muni.fi.pv217.Entity.Genre;
@@ -29,7 +31,7 @@ public class BookResource {
     @Path("/create")
     @Counted(name = "book.create.counter")
     @Timed(name = "book.create.timer")
-    public Response createBook(Book book) {
+    public Response createBook(BookCreateDTO book) {
         Book created = bookService.createBook(book);
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
@@ -38,7 +40,7 @@ public class BookResource {
     @Path("/{id}/update")
     @Counted(name = "book.update.counter")
     @Timed(name = "book.update.timer")
-    public Book updateBook(@PathParam long id, Book update) {
+    public Book updateBook(@PathParam long id, BookUpdateDTO update) {
         return bookService.updateBook(id, update);
     }
 
@@ -61,20 +63,20 @@ public class BookResource {
         return Book.list("author.id", authorId);
     }
 
-//    @GET
-//    @Transactional
-//    @Path("/test")
-//    public String test() {
-//        Author author = new Author("author", LocalDate.now(), new HashSet<>());
-//        author.persist();
-//        Book book = new Book("a", LocalDate.now(), Genre.ACTION, new BigDecimal(24), author);
-//        book.persist();
-//        Book b = new Book("b", LocalDate.now(), Genre.ACTION, new BigDecimal(24), author);
-//        Book c = new Book("c", LocalDate.now(), Genre.ACTION, new BigDecimal(24), null);
-//        b.persist();
-//        c.persist();
-//        return "Yeah";
-//    }
+    @GET
+    @Transactional
+    @Path("/test")
+    public String test() {
+        Author author = new Author("author", LocalDate.now(), new HashSet<>());
+        author.persist();
+        Book book = new Book("a", LocalDate.now(), Genre.ACTION, new BigDecimal(24), author);
+        book.persist();
+        Book b = new Book("b", LocalDate.now(), Genre.ACTION, new BigDecimal(24), author);
+        Book c = new Book("c", LocalDate.now(), Genre.ACTION, new BigDecimal(24), null);
+        b.persist();
+        c.persist();
+        return "Yeah";
+    }
 
 
     @GET

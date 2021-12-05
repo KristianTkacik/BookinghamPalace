@@ -1,6 +1,8 @@
 package cz.muni.fi.pv217;
 
-import cz.muni.fi.pv217.DTO.AuthorDTO;
+import cz.muni.fi.pv217.DTO.AuthorCreateDTO;
+import cz.muni.fi.pv217.DTO.AuthorUpdateDTO;
+import cz.muni.fi.pv217.DTO.BookIdDto;
 import cz.muni.fi.pv217.Entity.Author;
 import cz.muni.fi.pv217.Entity.Book;
 import cz.muni.fi.pv217.Service.AuthorService;
@@ -25,7 +27,7 @@ public class AuthorResource {
     @Path("/create")
     @Counted(name = "author.create.counter")
     @Timed(name = "author.create.timer")
-    public Response createAuthor(AuthorDTO author) {
+    public Response createAuthor(AuthorCreateDTO author) {
         Author created = authorService.createAuthor(author);
         return Response.status(Response.Status.CREATED).entity(created).build();
     }
@@ -34,7 +36,7 @@ public class AuthorResource {
     @Path("/{id}/update")
     @Counted(name = "author.update.counter")
     @Timed(name = "author.update.timer")
-    public Author updateAuthor(@PathParam long id, AuthorDTO update) {
+    public Author updateAuthor(@PathParam long id, AuthorUpdateDTO update) {
         return authorService.updateAuthor(id, update);
     }
 
@@ -42,13 +44,18 @@ public class AuthorResource {
     @Path("/{id}/add-book")
     @Counted(name = "author.add-book.counter")
     @Timed(name = "author.add-book.timer")
-    public Response addBook(@PathParam long id, Book book) {
+    public Response addBook(@PathParam long id, BookIdDto book) {
         try {
             Author author = authorService.addBook(id, book);
             return Response.ok(author).build();
         } catch (NotFoundException e) {
             return Response
                     .status(Response.Status.NOT_FOUND)
+                    .entity(e.getMessage())
+                    .build();
+        } catch (IllegalArgumentException e) {
+            return Response
+                    .status(Response.Status.NOT_MODIFIED)
                     .entity(e.getMessage())
                     .build();
         }
@@ -58,13 +65,18 @@ public class AuthorResource {
     @Path("/{id}/remove-book")
     @Counted(name = "author.remove-book.counter")
     @Timed(name = "author.remove-book.timer")
-    public Response removeBook(@PathParam long id, Book book) {
+    public Response removeBook(@PathParam long id, BookIdDto book) {
         try {
             Author author = authorService.removeBook(id, book);
             return Response.ok(author).build();
         } catch (NotFoundException e) {
             return Response
                     .status(Response.Status.NOT_FOUND)
+                    .entity(e.getMessage())
+                    .build();
+        } catch (IllegalArgumentException e) {
+            return Response
+                    .status(Response.Status.NOT_MODIFIED)
                     .entity(e.getMessage())
                     .build();
         }
