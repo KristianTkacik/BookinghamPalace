@@ -1,6 +1,6 @@
 package cz.muni.fi.pv217.client;
 
-import cz.muni.fi.pv217.entity.Book;
+import cz.muni.fi.pv217.model.Book;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 

@@ -6,6 +6,10 @@ import cz.muni.fi.pv217.client.OrderServiceClient;
 import cz.muni.fi.pv217.dto.BasketItemAddDTO;
 import cz.muni.fi.pv217.dto.OrderAddressDTO;
 import cz.muni.fi.pv217.entity.*;
+import cz.muni.fi.pv217.model.Book;
+import cz.muni.fi.pv217.model.Customer;
+import cz.muni.fi.pv217.model.Order;
+import cz.muni.fi.pv217.model.OrderItem;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -33,7 +37,10 @@ public class BasketService {
 
     @Transactional
     public Basket getCustomerBasket(long customerId) {
-        checkCustomerExist(customerId);
+        Customer customer = customerServiceClient.getCustomer(customerId);
+        if (customer == null) {
+            throw new NotFoundException(String.format("Customer with id %d does not exist", customerId));
+        }
 
         Basket basket = Basket.find("customerId", customerId).firstResult();
         if (basket == null) {
@@ -46,8 +53,6 @@ public class BasketService {
 
     @Transactional
     public Basket addItem(long customerId, BasketItemAddDTO itemAddDTO) {
-        checkCustomerExist(customerId);
-
         Basket basket = getCustomerBasket(customerId);
         if (basket == null) {
             basket = new Basket();
@@ -81,8 +86,6 @@ public class BasketService {
 
     @Transactional
     public Basket removeItem(long customerId, long itemId) {
-        checkCustomerExist(customerId);
-
         Basket basket = getCustomerBasket(customerId);
         if (basket == null) {
             throw new NotFoundException("Customer with id %d does not have a basket");
@@ -101,8 +104,6 @@ public class BasketService {
 
     @Transactional
     public Basket clear(long customerId) {
-        checkCustomerExist(customerId);
-
         Basket basket = getCustomerBasket(customerId);
         if (basket == null) {
             throw new NotFoundException("Customer with id %d does not have a basket");
@@ -145,12 +146,5 @@ public class BasketService {
 
         clear(customerId);
         return orderServiceClient.createOrder(order);
-    }
-
-    private void checkCustomerExist(long customerId) {
-        Customer customer = customerServiceClient.getCustomer(customerId);
-        if (customer == null) {
-            throw new NotFoundException(String.format("Customer with id %d does not exist", customerId));
-        }
     }
 }
