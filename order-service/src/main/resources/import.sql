@@ -1,6 +1,6 @@
 INSERT INTO eshopOrder(id, customerId, customerName, street, city, country, date)
 VALUES ( nextval('hibernate_sequence'),
-        5,
+        95,
         'Adam',
         'Mostova 1',
         'Moskva',
@@ -10,7 +10,7 @@ VALUES ( nextval('hibernate_sequence'),
 
 INSERT INTO eshopOrder(id, customerId, customerName, street, city, country, date)
 VALUES ( nextval('hibernate_sequence'),
-         5,
+         96,
          'Anna',
          'Mostova 2',
          'Praha',
@@ -20,7 +20,7 @@ VALUES ( nextval('hibernate_sequence'),
 
 INSERT INTO eshopOrder(id, customerId, customerName, street, city, country, date)
 VALUES ( nextval('hibernate_sequence'),
-         5,
+         97,
          'Jozka',
          'Peklo 2',
          'Brno',
