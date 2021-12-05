@@ -6,6 +6,10 @@ import cz.muni.fi.pv217.client.OrderServiceClient;
 import cz.muni.fi.pv217.dto.BasketItemAddDTO;
 import cz.muni.fi.pv217.dto.OrderAddressDTO;
 import cz.muni.fi.pv217.entity.*;
+import cz.muni.fi.pv217.model.Book;
+import cz.muni.fi.pv217.model.Customer;
+import cz.muni.fi.pv217.model.Order;
+import cz.muni.fi.pv217.model.OrderItem;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
