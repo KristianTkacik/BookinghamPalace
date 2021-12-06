@@ -35,6 +35,21 @@ We think that a microservice architecture is appropriate for this project becaus
 * **Large number of APIs** - Each microservice exposes its own API, which results in a large number of interfaces that need to be supervised.
 * **Difficult integration testing** - Testing of interaction between the services brings some challenges.
 
+## Dev mode with all services
+
+Start the supporting services:
+```
+docker-compose -f docker-compose-dev.yml up
+```
+Start all individual microservices:
+```
+./mvnw clean compile quarkus:dev
+```
+Stop the supporting services:
+```
+docker-compose -f docker-compose-dev.yml down
+```
+
 ## OpenAPI
 
 * [Basket Service OpenAPI](http://localhost:8082/q/openapi?format=json)

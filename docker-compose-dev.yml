@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+
+  postgres:
+    image: postgres:14.0
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=pv217db
+    volumes:
+      - ${HOME}/postgres-data/:/var/lib/postgresql/data:Z
+
+  prometheus:
+    image: prom/prometheus:v2.30.3
+    container_name: prometheus
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:Z
+    network_mode: host
+
+  grafana:
+    image: grafana/grafana:8.2.1
+    container_name: grafana
+    network_mode: host
