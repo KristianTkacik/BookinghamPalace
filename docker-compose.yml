@@ -6,8 +6,7 @@ services:
     build:
       context: ./basket-service
       dockerfile: src/main/docker/Dockerfile.jvm
-    ports:
-      - "8082:8082"
+    network_mode: host
     depends_on:
       - postgres
 
@@ -15,8 +14,7 @@ services:
     build:
       context: ./catalog-service
       dockerfile: src/main/docker/Dockerfile.jvm
-    ports:
-      - "8083:8083"
+    network_mode: host
     depends_on:
       - postgres
 
@@ -24,8 +22,7 @@ services:
     build:
       context: ./order-service
       dockerfile: src/main/docker/Dockerfile.jvm
-    ports:
-      - "8084:8084"
+    network_mode: host
     depends_on:
       - postgres
 
@@ -33,8 +30,7 @@ services:
     build:
       context: ./customer-service
       dockerfile: src/main/docker/Dockerfile.jvm
-    ports:
-      - "8085:8085"
+    network_mode: host
     depends_on:
       - postgres
 
