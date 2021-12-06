@@ -19,7 +19,8 @@ This project implements a book eshop named *Bookingham Palace* (based in London,
 5. When the customer added all the desired books to his/her basket, (s)he does a basket checkout by using the `/customer/{customerId}/basket/checkout`. This creates order and clears the customer's basket.
 
 ## Why Microservice Architecture is Appropriate
-We think that a microservice architecture is appropriate for this project because it brings several significant advantages (listed below) which can significantly improve the customer experience, which we believe to be the most important factor for an online bookstore. In the case of development, while the use of microservices can introduce some challenges, we think that it can bring some benefits as well.
+
+We think that a microservice architecture is appropriate for this project because it brings several advantages (listed below) which can significantly improve the customer experience, which we believe to be the most important factor for an online bookstore. In the case of development, while the use of microservices can introduce some challenges, we think that it can bring some benefits as well.
 
 ## Benefits of Microservices
 
@@ -34,6 +35,23 @@ We think that a microservice architecture is appropriate for this project becaus
 * **Need for interface control** - Changes in interfaces can affect microservices, which depend on them. Therefore we need to keep track of these dependencies.
 * **Large number of APIs** - Each microservice exposes its own API, which results in a large number of interfaces that need to be supervised.
 * **Difficult integration testing** - Testing of interaction between the services brings some challenges.
+
+## Building and Running
+
+Build the project with:
+```
+mvn clean install
+```
+After the project is built, use the following commands to run the application:
+```
+docker-compose build
+
+docker-compose up
+```
+You can stop the application (kill the containers and remove them) with:
+```
+docker-compose down
+```
 
 ## Dev mode with all services
 

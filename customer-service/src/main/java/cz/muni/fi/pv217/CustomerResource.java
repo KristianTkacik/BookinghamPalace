@@ -42,7 +42,7 @@ public class CustomerResource {
     CustomerService customerService;
 
     @GET
-    @Retry(maxRetries = 5)
+    @Retry(maxRetries = 10)
     @PermitAll
     @Counted(name = "customer.getAll.counter")
     @Timed(name = "customer.getAll.timer")
