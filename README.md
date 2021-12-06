@@ -53,6 +53,21 @@ You can stop the application (kill the containers and remove them) with:
 docker-compose down
 ```
 
+## Dev mode with all services
+
+Start the supporting services:
+```
+docker-compose -f docker-compose-dev.yml up
+```
+Start all individual microservices:
+```
+./mvnw clean compile quarkus:dev
+```
+Stop the supporting services:
+```
+docker-compose -f docker-compose-dev.yml down
+```
+
 ## OpenAPI
 
 * [Basket Service OpenAPI](http://localhost:8082/q/openapi?format=json)
