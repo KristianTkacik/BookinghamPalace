@@ -71,8 +71,9 @@ public class BasketService {
         item.unitPrice = book.price;
         item.quantity = itemAddDTO.quantity;
 
-        if (basket.items.contains(item)) {
-            BasketItem original = BasketItem.findById(item.id);
+        BasketItem original = BasketItem.find("basketId = ?1 and bookId = ?2", basket.id, item.bookId).firstResult();
+
+        if (original != null) {
             original.merge(item);
             original.persist();
         } else {

@@ -36,7 +36,7 @@ public class BasketResourceTest {
     @Test
     public void removeItemFromBasket() {
         given()
-                .when().put("/customer/1/basket/remove/1")
+                .when().put("/customer/1/basket/remove/5")
                 .then()
                 .statusCode(200)
                 .body("customerId", is(1))
