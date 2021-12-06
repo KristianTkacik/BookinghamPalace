@@ -10,14 +10,44 @@ import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 @QuarkusTestResource(H2DatabaseTestResource.class)
+@QuarkusTestResource(WiremockCustomer.class)
 public class BasketResourceTest {
 
     @Test
-    public void testGetCustomerBasketEndpoint() {
+    public void testGetCustomerBasket() {
         given()
                 .when().get("/customer/1/basket")
                 .then()
                 .statusCode(200)
-                .body(is("{\"id\":1,\"customerId\":1,\"items\":[]}"));
+                .body("customerId", is(1))
+                .body("items.size()", is(1));
+    }
+
+    @Test
+    public void testClearBasket() {
+        given()
+                .when().put("/customer/1/basket/clear")
+                .then()
+                .statusCode(200)
+                .body("customerId", is(1))
+                .body("items.size()", is(0));
+    }
+
+    @Test
+    public void removeItemFromBasket() {
+        given()
+                .when().put("/customer/1/basket/remove/1")
+                .then()
+                .statusCode(200)
+                .body("customerId", is(1))
+                .body("items.size()", is(0));
+    }
+
+    @Test
+    public void removeNonexistentItemFromBasket() {
+        given()
+                .when().put("/customer/2/basket/remove/999")
+                .then()
+                .statusCode(404);
     }
 }

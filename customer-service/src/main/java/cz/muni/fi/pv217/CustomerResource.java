@@ -77,8 +77,14 @@ public class CustomerResource {
     @RolesAllowed("Customer")
     @Counted(name = "customer.update.counter")
     @Timed(name = "customer.update.timer")
-    public Customer updateCustomer(CustomerUpdateDTO updateDTO) {
-        return customerService.updateCustomer(Long.parseLong(jwt.getClaim("id").toString()), updateDTO);
+    public Response updateCustomer(CustomerUpdateDTO updateDTO) {
+        Customer updated;
+        try {
+            updated = customerService.updateCustomer(Long.parseLong(jwt.getSubject()), updateDTO);
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.ok(updated).build();
     }
 
     @DELETE
@@ -87,7 +93,7 @@ public class CustomerResource {
     @Counted(name = "customer.delete.counter")
     @Timed(name = "customer.delete.timer")
     public Response deleteCustomer() {
-        Customer deleted = customerService.deleteCustomer(Long.parseLong(jwt.getClaim("id").toString()));
+        Customer deleted = customerService.deleteCustomer(Long.parseLong(jwt.getSubject()));
         return Response.ok(deleted).build();
     }
 
@@ -108,8 +114,7 @@ public class CustomerResource {
 
     private String generateToken(Customer customer) {
         return Jwt.issuer("https://example.com/issuer")
-                .subject(customer.email)
-                .claim("id", customer.id)
+                .subject(customer.id.toString())
                 .claim(Claims.email.name(), customer.email)
                 .groups(new HashSet<>(List.of("Customer")))
                 .sign();

@@ -14,6 +14,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Path("/book")
 @ApplicationScoped
+@Produces(MediaType.APPLICATION_JSON)
 public class BookResource {
 
     @Inject
@@ -29,6 +31,7 @@ public class BookResource {
 
     @POST
     @Path("/create")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Counted(name = "book.create.counter")
     @Timed(name = "book.create.timer")
     public Response createBook(BookCreateDTO book) {
@@ -38,6 +41,7 @@ public class BookResource {
 
     @PUT
     @Path("/{id}/update")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Counted(name = "book.update.counter")
     @Timed(name = "book.update.timer")
     public Book updateBook(@PathParam long id, BookUpdateDTO update) {
