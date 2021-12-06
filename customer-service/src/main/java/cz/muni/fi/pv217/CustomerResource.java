@@ -6,11 +6,13 @@ import cz.muni.fi.pv217.dto.CustomerUpdateDTO;
 import cz.muni.fi.pv217.entity.Customer;
 import cz.muni.fi.pv217.service.CustomerService;
 import io.smallrye.jwt.build.Jwt;
+import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.jwt.Claims;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
+import org.jboss.logging.Logger;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -18,6 +20,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,6 +31,10 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 public class CustomerResource {
 
+    private static final Logger LOGGER = Logger.getLogger(CustomerResource.class);
+
+    private AtomicLong counter = new AtomicLong(0);
+
     @Inject
     JsonWebToken jwt;
 
@@ -34,10 +42,16 @@ public class CustomerResource {
     CustomerService customerService;
 
     @GET
+    @Retry(maxRetries = 5)
     @PermitAll
     @Counted(name = "customer.getAll.counter")
     @Timed(name = "customer.getAll.timer")
     public List<Customer> getCustomers() {
+        final Long invocationNumber = counter.getAndIncrement();
+
+        maybeFail(String.format("CustomerResource#getCustomers() invocation #%d failed", invocationNumber));
+
+        LOGGER.infof("CustomerResource#getCustomers() invocation #%d returning successfully", invocationNumber);
         return Customer.listAll();
     }
 
@@ -118,5 +132,12 @@ public class CustomerResource {
                 .claim(Claims.email.name(), customer.email)
                 .groups(new HashSet<>(List.of("Customer")))
                 .sign();
+    }
+
+    private void maybeFail(String failureLogMessage) {
+        if (new Random().nextBoolean()) {
+            LOGGER.error(failureLogMessage);
+            throw new RuntimeException("Resource failure.");
+        }
     }
 }
