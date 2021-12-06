@@ -38,7 +38,6 @@ services:
     depends_on:
       - postgres
 
-
   postgres:
     image: postgres:14.0
     container_name: postgres
@@ -46,6 +45,7 @@ services:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=pv217db
     volumes:
       - ${HOME}/postgres-data/:/var/lib/postgresql/data:Z
 
