@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+
+  basket-service:
+    build:
+      context: ./basket-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres
+
+  catalog-service:
+    build:
+      context: ./catalog-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8083:8083"
+    depends_on:
+      - postgres
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8084:8084"
+    depends_on:
+      - postgres
+
+  customer-service:
+    build:
+      context: ./customer-service
+      dockerfile: src/main/docker/Dockerfile.jvm
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14.0
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - ${HOME}/postgres-data/:/var/lib/postgresql/data:Z
+
+  prometheus:
+    image: prom/prometheus:v2.30.3
+    container_name: prometheus
+    command: "--config.file=/etc/prometheus/prometheus.yml"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:Z
+    network_mode: host
+
+  grafana:
+    image: grafana/grafana:8.2.1
+    container_name: grafana
+    network_mode: host
