@@ -24,16 +24,16 @@ We think that a microservice architecture is appropriate for this project becaus
 
 ## Benefits of Microservices
 
-* **Fault isolation** - If a single microservice fails, this failure is isolated, avoiding the crash of the entire application.
-* **Readability** - The application source code is split into smaller parts, making it more readable.
-* **Extendability** - The application functionality can be easily extended by adding other microservices (for example, a book recommendation service).
-* **Development autonomy** - The application can easily be developed concurrently by multiple developers (working on different microservices).
-* **Scalability** - We can scale the most overloaded microservices instead of scaling the entire application.
+* **Fault isolation** - If a microservice fails, this failure is isolated, and most functionality is still available to our customers.
+* **Readability** - The application source code is split into smaller parts, making it more readable and easier to maintain.
+* **Extendability** - More microservices (such as a recommendation service) can be easily added and integrated with existing ones.
+* **Development autonomy** - The application can easily be developed concurrently by multiple developers, so we can bring new features to customers faster.
+* **Scalability** - We can scale overloaded microservices when needed, for example the order service before Christmas when people order more books.
 
 ## Drawbacks of Microservices
 
-* **Need for interface control** - Changes in interfaces can affect microservices, which depend on them. Therefore we need to keep track of these dependencies.
-* **Large number of APIs** - Each microservice exposes its own API, which results in a large number of interfaces that need to be supervised.
+* **More complexity** - Microservice architecture is more complex, which slows down the development process.
+* **Many APIs** - Each microservice exposes its own API, which can become difficult to track and document.
 * **Difficult integration testing** - Testing of interaction between the services brings some challenges.
 
 ## Building and Running
@@ -53,7 +53,7 @@ You can stop the application (kill the containers and remove them) with:
 docker-compose down
 ```
 
-## Dev mode with all services
+## Running in Dev Mode
 
 Start the supporting services:
 ```
