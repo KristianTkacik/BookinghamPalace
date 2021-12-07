@@ -68,22 +68,6 @@ public class BookResource {
     }
 
     @GET
-    @Transactional
-    @Path("/test")
-    public String test() {
-        Author author = new Author("author", LocalDate.now(), new HashSet<>());
-        author.persist();
-        Book book = new Book("a", LocalDate.now(), Genre.ACTION, new BigDecimal(24), author);
-        book.persist();
-        Book b = new Book("b", LocalDate.now(), Genre.ACTION, new BigDecimal(24), author);
-        Book c = new Book("c", LocalDate.now(), Genre.ACTION, new BigDecimal(24), null);
-        b.persist();
-        c.persist();
-        return "Yeah";
-    }
-
-
-    @GET
     @Path("/{id}")
     @Counted(name = "book.getOne.counter")
     @Timed(name = "book.getOne.timer")

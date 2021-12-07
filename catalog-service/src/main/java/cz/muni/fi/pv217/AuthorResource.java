@@ -4,7 +4,6 @@ import cz.muni.fi.pv217.DTO.AuthorCreateDTO;
 import cz.muni.fi.pv217.DTO.AuthorUpdateDTO;
 import cz.muni.fi.pv217.DTO.BookIdDto;
 import cz.muni.fi.pv217.Entity.Author;
-import cz.muni.fi.pv217.Entity.Book;
 import cz.muni.fi.pv217.Service.AuthorService;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
