@@ -82,6 +82,19 @@ docker-compose -f docker-compose-dev.yml down
 * [Order Service Swagger UI](http://localhost:8084/q/swagger-ui/)
 * [Customer Service Swagger UI](http://localhost:8085/q/swagger-ui/)
 
+## Prometheus and Grafana
+
+[Prometheus](http://localhost:9090)
+
+[Grafana](http://localhost:3000)
+
+For Grafana:
+* login with name: `admin`, password: `admin`
+* add a new data source, select `Prometheus`
+* set URL to be `http://localhost:9090`, change scrape interval to  `1s`, save and test
+* select the plus button, import our dashboard: `grafana.json`
+
+
 ## Authors
 
 * Kristián Tkáčik
